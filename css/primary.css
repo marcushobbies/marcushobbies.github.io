@@ -1,0 +1,36 @@
+body {
+    padding: 0;
+    background-color: #282c34;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.projects {
+    position: fixed;
+    background-color: #21252b;
+    height: 100%;
+    width: 20%;
+    color: #7d879b;
+    margin:0;
+}
+
+.projects ul{
+    padding: 0;
+    margin: 15px;
+    list-style: none;
+}
+
+.projects li{
+    width: 100%;
+    background-color: #21252b;
+}
+.projects li:hover{
+    width: 100%;
+    background-color: #282c34;
+}
+
+.projects ul a {
+    text-decoration: none;
+    color: #8c95a6;
+}
