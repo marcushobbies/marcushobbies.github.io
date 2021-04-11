@@ -1,22 +1,83 @@
-var projects = [
+var eprojects = [
     'Soldering Fume Filter',
     'Laser Sight'
 ] ;
-var projectId = [
+var eprojectId = [
     'fumefilter',
     'lasersight'
 ] ;
 
-function listProjects(){
-    let list = document.getElementById('projectList');
-    let innerHTML = "";
+var cprojects = [
+    'This Website!',
+    '2D Game'
+] ;
+var cprojectId = [
+    'website',
+    'game2d'
+] ;
 
-    for(var i = 0; i < projects.length; i++){
-        innerHTML = innerHTML + "<li><a href='index.html?project=" + projectId[i] + "&page=0'> " + projects[i] + "</a></li>";
+var ddo = 0;
+// 0 = neither
+// 1 = eProj
+// 2 = cProj
+// 3 = both
+
+function updateList(difference){
+    //2 actually means list 1, 1 actually means list 2
+    ddo += difference;
+    switch (Math.abs(difference)) {
+        case 2:
+            unlisteProjects(1);
+            listeProjects(1);
+            break;
+        case 1:
+            unlistcProjects(1);
+            listcProjects(1);
+            break;
+        default:
+    }
+}
+
+function ddoContinuity(difference){
+    (ddo+difference == difference || ddo+difference == 0) ? ddo += difference : updateList(difference);
+}
+
+
+function listeProjects(hasContinuity){
+    let list = document.getElementById('eprojectList');
+    let innerHTML = "<li><a onclick=\"unlisteProjects(0)\">▼ Engineering Projects</a></li>";
+    if (hasContinuity == 0) {ddoContinuity(1);}
+
+    for(var i = 0; i < eprojects.length; i++){
+        innerHTML = innerHTML + "<li><a href='index.html?project=" + eprojectId[i] + "&ddo="+ddo+"' id=\"project\"> " + eprojects[i] + "</a></li>";
     }
 
     list.innerHTML = innerHTML;
+}
+function unlisteProjects(hasContinuity){
+    let list = document.getElementById('eprojectList');
+    let innerHTML = "<li><a onclick=\"listeProjects(0)\">► Engineering Projects</a></li>";
 
+    list.innerHTML = innerHTML;
+    if (hasContinuity == 0) {ddoContinuity(-1);}
+}
+function listcProjects(hasContinuity){
+    let list = document.getElementById('cprojectList');
+    let innerHTML = "<li><a onclick=\"unlistcProjects(0)\">▼ Coding Projects</a></li>";
+    if (hasContinuity == 0) {ddoContinuity(2);}
+
+    for(var i = 0; i < cprojects.length; i++){
+        innerHTML = innerHTML + "<li><a href='index.html?project=" + cprojectId[i] + "&ddo="+ddo+"' id=\"project\"> " + cprojects[i] + "</a></li>";
+    }
+
+    list.innerHTML = innerHTML;
+}
+function unlistcProjects(hasContinuity){
+    let list = document.getElementById('cprojectList');
+    let innerHTML = "<li><a onclick=\"listcProjects(0)\">► Coding Projects</a></li>";
+
+    list.innerHTML = innerHTML;
+    if (hasContinuity == 0) {ddoContinuity(-2);}
 }
 
 function readURL(){
@@ -54,7 +115,25 @@ function updateView(){
 
 }
 
-listProjects();
-updateView();
+function continuityCheck(){
+    var GET = readURL();
 
-console.log(readURL());
+    if(GET['ddo']){
+        var localddo = GET['ddo'];
+
+        if(localddo == 1){
+            listeProjects(0);
+        }
+        if(localddo == 2){
+            listcProjects(0);
+        }
+        if(localddo == 3){
+            listeProjects(0);
+            listcProjects(0);
+        }
+    }
+
+    //console.log("Continuity Fixed.");
+}
+
+continuityCheck();
