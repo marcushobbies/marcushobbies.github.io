@@ -33,7 +33,28 @@ function readURL(){
     return dataMap;
 }
 
-listProjects();
+function updateView(){
+    let view = document.getElementsByClassName('view');
+    let innerHTML = "";
 
+    var file = "projects/fumefilter.proj";
+
+    var reader = new FileReader();
+    reader.onload = function(progressEvent){
+    // Entire file
+    console.log(this.result);
+
+    // By lines
+    var lines = this.result.split('\n');
+    for(var line = 0; line < lines.length; line++){
+      console.log(lines[line]);
+    }
+    };
+    reader.readAsText(file);
+
+}
+
+listProjects();
+updateView();
 
 console.log(readURL());
