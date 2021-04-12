@@ -45,7 +45,7 @@ function ddoContinuity(difference){
 
 function listeProjects(hasContinuity){
     let list = document.getElementById('eprojectList');
-    let innerHTML = "<li><a onclick=\"unlisteProjects(0)\">▼ Engineering Projects</a></li>";
+    let innerHTML = "<li><a onclick=\"unlisteProjects(0)\" id=\"nosel\">▼ <image src=\"assets/engineering_favicon.png\"> Engineering Projects</a></li>";
     if (hasContinuity == 0) {ddoContinuity(1);}
 
     for(var i = 0; i < eprojects.length; i++){
@@ -56,14 +56,14 @@ function listeProjects(hasContinuity){
 }
 function unlisteProjects(hasContinuity){
     let list = document.getElementById('eprojectList');
-    let innerHTML = "<li><a onclick=\"listeProjects(0)\">► Engineering Projects</a></li>";
+    let innerHTML = "<li><a onclick=\"listeProjects(0)\" id=\"nosel\">► <image src=\"assets/engineering_favicon.png\"> Engineering Projects</a></li>";
 
     list.innerHTML = innerHTML;
     if (hasContinuity == 0) {ddoContinuity(-1);}
 }
 function listcProjects(hasContinuity){
     let list = document.getElementById('cprojectList');
-    let innerHTML = "<li><a onclick=\"unlistcProjects(0)\">▼ Coding Projects</a></li>";
+    let innerHTML = "<li><a onclick=\"unlistcProjects(0)\" id=\"nosel\">▼ <image src=\"assets/coding_favicon.png\"> Coding Projects</a></li>";
     if (hasContinuity == 0) {ddoContinuity(2);}
 
     for(var i = 0; i < cprojects.length; i++){
@@ -74,7 +74,7 @@ function listcProjects(hasContinuity){
 }
 function unlistcProjects(hasContinuity){
     let list = document.getElementById('cprojectList');
-    let innerHTML = "<li><a onclick=\"listcProjects(0)\">► Coding Projects</a></li>";
+    let innerHTML = "<li><a onclick=\"listcProjects(0)\" id=\"nosel\">► <image src=\"assets/coding_favicon.png\"> Coding Projects</a></li>";
 
     list.innerHTML = innerHTML;
     if (hasContinuity == 0) {ddoContinuity(-2);}
@@ -133,7 +133,15 @@ function continuityCheck(){
         }
     }
 
-    //console.log("Continuity Fixed.");
+    console.log("Continuity Fixed.");
 }
+function readProjectFile(){
+    var GET = readURL();
+    var projectframe = document.getElementById("project");
+    console.log("TSET");
+    projectframe.src = "projects/"+GET['project']+".html";
+}
+
+readProjectFile();
 
 continuityCheck();
