@@ -179,7 +179,7 @@ class Staff {
   addNote(note, shift, hand){  // 0 = right, 1 = left
     let i = shift*this.spacing*5 + (this.spacing*1.5) + this.x+40;
     let j = this.y + this.increment*(note+11) + hand*this.spacing*8;
-    drawChar('♩',  this.increment*10, i, j);
+    drawChar('♩',  this.increment*9.8, i, j);
     if(document.getElementById('showNotes').checked){
       drawLet(notes.get((-12)*hand + note), 16,  i+12, j-5);
     }
