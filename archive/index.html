@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Portfolio</title>
+        <link rel="stylesheet" href="css/primary.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    </head>
+    <body>
+        <div>
+            <div class="projects">
+                <center><h1> Projects </h3></center>
+                <ul id="eprojectList">
+                    <li><a onclick="listeProjects(0)" id="nosel">► <image src="assets/engineering_favicon.png"> Engineering Projects</a></li>
+                </ul>
+                <ul id="cprojectList">
+                    <li><a onclick="listcProjects(0)" id="nosel">► <image src="assets/coding_favicon.png"> Coding Projects</a></li>
+                </ul>
+            </div>
+            <canvas id="canvas" width="80%" height="100%"></canvas>
+            <div class="view">
+                <iframe src="welcome_page.html" title="Welcome Page" id="project"></iframe>
+            </div>
+        </div>
+        <script src="js/index.js"></script>
+    </body>
+</html>

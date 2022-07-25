@@ -1,0 +1,105 @@
+body {
+    background-color: rgb(0, 0, 0);
+    font-family: 'Josefin Sans', sans-serif;
+    margin: 0;
+}
+
+a.btn {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: bold;
+    color: white;
+    text-align: left;
+
+    display: block;
+    background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 1%);
+    background-position-x: 0;
+    border: 0.15em solid rgb(255, 255 ,255);
+    border-color: white;
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    position: relative;
+    left: 50px;
+    width: 5em;
+    /* top | right | bottom | left */
+    padding: 0.5em 2em 0.5em 0.5em;
+    margin: 1px;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    cursor: pointer;
+}
+
+a.btn span{
+    display: inline-block;
+    margin: 0px;
+    position: absolute;
+    top: -0.5em;
+    left: -0.5em;
+    padding: 0.5em 2.1em 0.6em 0.5em;
+
+
+    background-color: rgba(255, 255, 255, 0);
+
+    width: 100%;
+    height: 100%;
+
+}
+
+@keyframes loader {
+    from {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 0%);
+    }
+    10% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 10%);
+    }
+    20% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 20%);
+    }
+    30% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 30%);
+    }
+    40% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 40%);
+    }
+    50% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 50%);
+    }
+    60% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 60%);
+    }
+    70% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 70%);
+    }
+    80% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 80%);
+    }
+    90% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 90%);
+    }
+    100% {
+        background-image: linear-gradient(to right, rgb(255, 255, 255), rgba(0, 0, 0, 0) 100%);
+    }
+}
+
+a.btn:hover {
+    border-color: rgb(230, 230, 230);
+
+
+    color: rgb(255, 30, 30);
+}
+
+
+a.btn:active {
+    color: rgb(255, 90, 30);
+    animation-name: loader;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+
+}

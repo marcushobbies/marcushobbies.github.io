@@ -2,27 +2,30 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Portfolio</title>
-        <link rel="stylesheet" href="css/primary.css">
-        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <title>Marcus Porfilio's Portfolio</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
+        <link rel="stylesheet" href="css/master.css">
     </head>
     <body>
-        <div>
-            <div class="projects">
-                <center><h1> Projects </h3></center>
-                <ul id="eprojectList">
-                    <li><a onclick="listeProjects(0)" id="nosel">► <image src="assets/engineering_favicon.png"> Engineering Projects</a></li>
-                </ul>     
-                <ul id="cprojectList">
-                    <li><a onclick="listcProjects(0)" id="nosel">► <image src="assets/coding_favicon.png"> Coding Projects</a></li>
-                </ul>
-            </div>
-            <div class="view">
-                <iframe src="welcome_page.html" title="Welcome Page" id="project"></iframe>
-            </div>
+
+    <span id="entrance">
+    <center><h1>Welcome</h1>
+    <div class="btn" id="enterBtn" onmousedown="enter()" onmouseup="resetEnter()">Hold To Enter</div>
+    </center>
+    </span>
+    <span id="console" class="terminal"></span><br>
+    <br>
+    <span id="mainSite" class="hidden">
+        <div class="content">
+            <h2>Marcus Porfilio</h2>
+            Hi, I'm Marcus Porfilio. I have a lot of interests, and many projects, so I thought I'd archive them all here on my website. <br>
+            You can use the console above to navigate the site, or if you're old fashioned, you can use this list of projects:
         </div>
-        <script src="js/index.js"></script>
+    </span>
+
+    <script type="text/javascript" src="js/master.js"></script>
     </body>
 </html>
