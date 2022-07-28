@@ -40,6 +40,12 @@ function processCommand(command){
     log(cmd);
 }
 
+function assignNavHoverAnimation(){
+    if(GET["injected"]){
+        con.classList.add("animNavBar");
+    }
+}
+
 function onLoadFnc(){
     var entrance = document.getElementById("entrance");
     var msite = document.getElementById("mainSite");
