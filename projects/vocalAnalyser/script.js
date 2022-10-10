@@ -49,7 +49,7 @@ function readAudio(stream){
 
     source.connect(analyserNode);
 
-    analyserNode.connect(audioCtx.destination);
+    //analyserNode.connect(audioCtx.destination);
 
 
     analyserNode.fftSize = 16384*2;
