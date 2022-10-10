@@ -20,6 +20,7 @@ tmpReadout.innerHTML = "- Hz";
 //https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext     Pretty Important
 
 
+var smoothingPower = 5;
 let source;
 
 navigator.mediaDevices.getUserMedia({audio: true})
@@ -76,15 +77,15 @@ let viewableFrequencyMax = 1024; //In Hz
 
 freqCtx.lineWidth = 2;
 freqCtx.strokeStyle = "rgb(200, 200, 200)";
-
+freqCtx.fillStyle = "rgb(0, 0, 0)";
+//freqCtx.fillStyle = "rgb(200, 200, 200)";
 function draw() {
   drawVisual = requestAnimationFrame(draw);
   analyserNode.getFloatTimeDomainData(dataArray);
   analyserNode.getFloatFrequencyData(freqArray);
-
-  freqCtx.fillStyle = "rgb(0, 0, 0)";
   freqCtx.fillRect(0, 0, 1024, HEIGHT*2);
-  freqCtx.fillStyle = "rgb(200, 200, 200)";
+
+
 
   freqCtx.beginPath();
 
@@ -95,18 +96,23 @@ function draw() {
   //TODO: get average of top (10?) intensity levels and then average them using their weights
   let maxVol = Math.max(...freqArray);
   let freqIndex = freqArray.indexOf(maxVol);
+  let waveform = new Path2D();
 
-
-    for(let i = 0; i < analyserNode.frequencyBinCount; i++){
-        let h = Math.pow((freqArray[i] + 130)/20, 5)/(Math.pow((maxVol + 130)/20, 5)) * HEIGHT;
-        if(i <= viewableFrequencyMax && i >= viewableFrequencyMin){
-          freqCtx.moveTo(i-1,(HEIGHT/2) + Math.floor(200*(dataArray[i-1])));
-          freqCtx.lineTo(i, (HEIGHT/2) + Math.floor(200*(dataArray[i])));
-          freqCtx.moveTo(i, HEIGHT*2);
-          freqCtx.lineTo(i, HEIGHT*2-h);
+    let prevLoc = HEIGHT/2;
+    for(let i = viewableFrequencyMin; i < analyserNode.frequencyBinCount; i++){
+        if(i >= viewableFrequencyMax || i <= viewableFrequencyMin){
+            continue;
         }
 
+        let h = Math.pow((freqArray[i] + 130)/20, smoothingPower)/(Math.pow((maxVol + 130)/20, smoothingPower)) * HEIGHT;
+        waveform.moveTo(i-1, prevLoc);
+        let cLoc = (HEIGHT/2) + Math.floor(200*(dataArray[i]));
+        waveform.lineTo(i, cLoc);
+        freqCtx.moveTo(i, HEIGHT*2);
+        freqCtx.lineTo(i, HEIGHT*2-h);
+        prevLoc = cLoc;
     }
+    freqCtx.stroke(waveform);
     freqCtx.stroke();
 
 

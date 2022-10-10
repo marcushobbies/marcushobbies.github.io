@@ -116,6 +116,8 @@ div.project {
     width: 95%;
     padding: 0.5em;
 
+    height: 180px;
+
     /*Dealing With Cursor Feedback */
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -130,6 +132,9 @@ div.project:hover {
     opacity: 0.9;
 }
 
+div.projects a{
+    text-decoration: none;
+}
 
 /* TODO: Browser compatibility with @keyframes*/
 @keyframes navSqueeze {
