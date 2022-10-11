@@ -181,7 +181,7 @@ halfStepsFromA4.set(-15, 'F#3');
 halfStepsFromA4.set(-14, 'G3');
 halfStepsFromA4.set(-13, 'G#3');
 halfStepsFromA4.set(-12, 'A3');
-halfStepsFromA4.set(-11, 'A#2');
+halfStepsFromA4.set(-11, 'A#3');
 halfStepsFromA4.set(-10, 'B3');
 
 halfStepsFromA4.set(-9, 'C4');
