@@ -8,6 +8,10 @@ var debugReadout = document.getElementById('debugData');
 var freqCanvas = document.getElementById('freqCanvas');
 var freqCtx = freqCanvas.getContext("2d", { alpha: false });
 
+var waveCanvas = document.getElementById('waveform');
+var waveCtx = waveCanvas.getContext("2d", { alpha: false });
+
+
 const audioCtx = new AudioContext();
 const gainNode = audioCtx.createGain();
 const analyserNode = audioCtx.createAnalyser();
@@ -67,14 +71,13 @@ const WIDTH = 900;
 const HEIGHT = 300;
 
 var zoomLevel = 1;
+var viewingPeriod = 400;
 
 function readPitch(){
     analyserNode.getFloatTimeDomainData(dataArray);
     analyserNode.getFloatFrequencyData(freqArray);
 
-    for(var i = 0; i < analyserNode.frequencyBinCount; i++){
-        console.log(i + "Hz @ " + (freqArray[i]) + "dB");
-    }
+    console.log(dataArray);
 
 }
 
@@ -84,49 +87,181 @@ let viewableFrequencyMax = 1024; //In Hz
 freqCtx.lineWidth = 2;
 freqCtx.strokeStyle = "rgb(200, 200, 200)";
 freqCtx.fillStyle = "rgb(0, 0, 0)";
+freqCtx.font = '24px serif';
+
+waveCtx.lineWidth = 2;
+waveCtx.strokeStyle = "rgb(200, 200, 200)";
+waveCtx.fillStyle = "rgb(0, 0, 0)";
+
+
+//THE PERIOD OF THE WAVE
+let pT = 1;
+
+let startTime = Date.now();
+let timePassed = 0;
 
 function draw() {
+  timePassed = Date.now()-startTime;
+
   drawVisual = requestAnimationFrame(draw);
   analyserNode.getFloatFrequencyData(freqArray);
   analyserNode.getFloatTimeDomainData(dataArray);
 
   //freqCtx.fillRect(0, 0, 1024, HEIGHT*2);
   freqCtx.clearRect(0, 0, 1024, HEIGHT*2);
+  waveCtx.clearRect(0, 0, 400, 400);
 
   freqCtx.beginPath();
+  waveCtx.beginPath();
 
 
   //TODO: get average of top (10?) intensity levels and then average them using their weights
   let maxVol = Math.max(...freqArray);
   let freqIndex = freqArray.indexOf(maxVol);
   let waveform = new Path2D();
+  let waveformPeriod = new Path2D();
+
+  let waveMax = Math.max(...dataArray);
+  let waveMaxIndex = dataArray.indexOf(waveMax);
+  let waveMaxIndices = [];
+  //dataArray.forEach((item, index) => item === waveMax ? waveMaxIndices.push(index) : null);
+
+  //console.log(waveMaxIndices.length);
 
     let prevLoc = HEIGHT/2;
+    let prevWaveY = 200;
+
+    let periodStartIn = periodStartIndex(dataArray);
+    let newpT = period(dataArray);
+
+    //This makes it so if wave is being rate starting when the slope is downwards it starts half a period later when it should be going upwards.
+    if(dataArray[periodStartIn] > dataArray[periodStartIn+1] ){
+        periodStartIn = periodStartIn + period/2;
+    }
+
+    if(newpT != 0){
+        pT = newpT;
+    }
+
+
     for(let i = viewableFrequencyMin; i < analyserNode.fftSize; i++){
         if(i >= viewableFrequencyMax || i <= viewableFrequencyMin){
             continue;
         }
 
         let h = Math.pow((freqArray[i] + 130)/20, smoothingPower)/(Math.pow((maxVol + 130)/20, smoothingPower)) * HEIGHT;
-        waveform.moveTo((i-1)*zoomLevel, prevLoc);
         let cLoc = (HEIGHT/2) + 200*(dataArray[i]);
-        waveform.lineTo(i*zoomLevel, cLoc);
+
+            waveform.moveTo((i-1)*zoomLevel, prevLoc);
+            waveform.lineTo((i)*zoomLevel, cLoc);
+
+        if(i > periodStartIn && i < periodStartIn+pT){
+            waveformPeriod.moveTo(((i-1-periodStartIn)/pT)*viewingPeriod, prevWaveY);
+            waveformPeriod.lineTo(((i-periodStartIn)/pT)*viewingPeriod, 200 + (200*dataArray[i]));
+
+            prevWaveY = 200 + (200*dataArray[i]);
+        }
 
         freqCtx.moveTo(i, HEIGHT*2);
         freqCtx.lineTo(i, HEIGHT*2-h);
         prevLoc = cLoc;
     }
     freqCtx.stroke(waveform);
+    waveCtx.stroke(waveformPeriod);
     freqCtx.stroke();
 
   let pitch = limitDecimals(mapFrequency(freqIndex), 1);
-  tmpReadout.innerHTML = pitch+"Hz" + " (" + findNote(pitch) + ")";
+  let avgPitch = limitDecimals(mapFrequency(findAvgWeightedIndex(freqArray, 3)), 1);
 
+  let cycleEnd = Date.now()-startTime;
+
+  freqCtx.strokeText((cycleEnd-timePassed)+"ms", 10, 25);
+
+  tmpReadout.innerHTML = pitch+"Hz" +" [" + avgPitch + "Hz] " + " (" + findNote(pitch) + ")";
+
+}
+
+//Use dataArray, to find the difference between peaks
+
+function periodStartIndex(array){
+    let absArray = array.map(Math.abs);
+    let nodeIndex = absArray.indexOf(Math.min(...absArray));
+
+    return nodeIndex;
+}
+
+function period(array){
+    let period = 0;
+    let nodeIndex = periodStartIndex(array);
+
+    let prevValue = 0;
+
+    let nodesPassed = 0;
+
+    for(var i = nodeIndex+1; i < array.length-nodeIndex; i++){
+
+        //SLOPE HAS PASSED NODE
+        //Since to pass the node the value must switch from positive to negative or negative to positive,
+        //multiplying the two values (when converted to 1 or -1 to signify the state)
+        // results in 1 if the switch has not happened and -1 if it has as 1*1 = 1 & -1*-1=1 (no change), but -1*1 = -1 (change)
+        if(array[i]/Math.abs(array[i])*prevValue/Math.abs(prevValue) === -1){
+            nodesPassed++;
+            if(nodesPassed === 2){
+                break;
+            }
+        }
+
+        prevValue = array[i];
+
+        period = i-nodeIndex+1;
+    }
+
+    return period;
 }
 
 function limitDecimals(number, decimalPlaces){
     let factor = Math.pow(10, decimalPlaces);
     return Math.floor((number*factor))/factor;
+}
+
+function findTopXMaxes(array, topX){
+    let tmpArray = [...array];
+    let maxes = [];
+    let max = Math.max(...tmpArray);
+    maxes.push(max);
+
+    for(var index = 1; index < topX; index++){
+        tmpArray.splice(tmpArray.indexOf(max));
+        max = Math.max(...tmpArray);
+        maxes.push(max);
+    }
+
+    return maxes;
+}
+
+function findAvgWeightedIndex(array, numberOfMaxes){
+    let top = [...findTopXMaxes(array, numberOfMaxes)];
+    let cumulatedTotal = top.reduce((partialSum, p) => partialSum + p, 0);
+
+    let avgMaxIndex = 0;
+
+    for(let i = 0; i < numberOfMaxes; i++){
+        avgMaxIndex += (top[i]/cumulatedTotal)*freqArray.indexOf(top[i]);
+    }
+
+    return avgMaxIndex;
+}
+
+function findXMax(array, maxPlacement){
+    let tmpArray = [...array];
+    let max = Math.max(...tmpArray);
+
+    for(var index = 1; index < maxPlacement; index++){
+        tmpArray.splice(tmpArray.indexOf(max));
+        max = Math.max(...tmpArray);
+    }
+
+    return max;
 }
 
 // log(2^1/12)(f/440) = n <= n being the # of half steps the note is away from A4 (440Hz)
