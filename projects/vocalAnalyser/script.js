@@ -157,9 +157,9 @@ function draw() {
 
         if(i > periodStartIn && i < periodStartIn+pT){
             waveformPeriod.moveTo(((i-1-periodStartIn)/pT)*viewingPeriod, prevWaveY);
-            waveformPeriod.lineTo(((i-periodStartIn)/pT)*viewingPeriod, 200 + (200*dataArray[i]));
+            waveformPeriod.lineTo(((i-periodStartIn)/pT)*viewingPeriod, 200 + (400*dataArray[i]));
 
-            prevWaveY = 200 + (200*dataArray[i]);
+            prevWaveY = 200 + (400*dataArray[i]);
         }
 
         freqCtx.moveTo(i, HEIGHT*2);
