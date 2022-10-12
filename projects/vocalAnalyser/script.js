@@ -89,7 +89,7 @@ freqCtx.strokeStyle = "rgb(200, 200, 200)";
 freqCtx.fillStyle = "rgb(0, 0, 0)";
 freqCtx.font = '24px serif';
 
-waveCtx.lineWidth = 2;
+waveCtx.lineWidth = 3;
 waveCtx.strokeStyle = "rgb(200, 200, 200)";
 waveCtx.fillStyle = "rgb(0, 0, 0)";
 
@@ -109,7 +109,6 @@ function draw() {
 
   //freqCtx.fillRect(0, 0, 1024, HEIGHT*2);
   freqCtx.clearRect(0, 0, 1024, HEIGHT*2);
-  waveCtx.clearRect(0, 0, 400, 400);
 
   freqCtx.beginPath();
   waveCtx.beginPath();
@@ -155,7 +154,10 @@ function draw() {
             waveform.moveTo((i-1)*zoomLevel, prevLoc);
             waveform.lineTo((i)*zoomLevel, cLoc);
 
-        if(i > periodStartIn && i < periodStartIn+pT){
+        if(i >= periodStartIn && i <= periodStartIn+pT){
+            if(i === periodStartIn){
+                waveCtx.clearRect(0, 0, 400, 400);
+            }
             waveformPeriod.moveTo(((i-1-periodStartIn)/pT)*viewingPeriod, prevWaveY);
             waveformPeriod.lineTo(((i-periodStartIn)/pT)*viewingPeriod, 200 + (400*dataArray[i]));
 
@@ -166,8 +168,8 @@ function draw() {
         freqCtx.lineTo(i, HEIGHT*2-h);
         prevLoc = cLoc;
     }
-    freqCtx.stroke(waveform);
     waveCtx.stroke(waveformPeriod);
+    freqCtx.stroke(waveform);
     freqCtx.stroke();
 
   let pitch = limitDecimals(mapFrequency(freqIndex), 1);
