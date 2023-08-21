@@ -4,6 +4,10 @@
         <meta charset="utf-8">
         <title>Vocal Trainer</title>
         <link rel="stylesheet" href="index.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Music&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Music&family=Roboto&display=swap" rel="stylesheet">
     </head>
     <body>
     <h2 id="pitch">#</h2>
@@ -11,8 +15,16 @@
 
     <canvas id="sheet" width="1200" height="500"></canvas>
 
-    <img id="trebleClef" src="trebleClef.webp" alt="The Scream" width="80" height="160" hidden>
-    <img id="bassClef" src="bassClef.webp" alt="The Scream" width="68" height="80" hidden>
+    <div id="settings">
+        <h4>TS:<h4>
+        <input type="number" name="topTimeSig" id="topTimeSig" value="4" min="1" max="12">/
+        <input type="number" name="btmTimeSig" id="btmTimeSig" value="4" min="1" max="12">
+        <label for="fileUpload">Upload</label>
+        <input type="file" name="SheetUpload" id="fileUpload" value="">
+    </div>
+
+    <img id="trebleClef" src="trebleClef.webp" alt="Treble Clef" width="80" height="160" hidden>
+    <img id="bassClef" src="bassClef.webp" alt="Bass Clef" width="68" height="80" hidden>
 
     <script type="text/javascript" src="script.js"></script>
     </body>

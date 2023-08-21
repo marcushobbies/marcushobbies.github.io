@@ -26,6 +26,9 @@ with the above license.
 var pitchElement = document.getElementById("pitch");
 var noteElement = document.getElementById("note");
 
+var topTimeSignature = document.getElementById("topTimeSig");
+var btmTimeSignature = document.getElementById("btmTimeSig");
+
 var source;
 var audioContext;
 var analyser;
@@ -125,17 +128,35 @@ function autoCorrelate(buffer, sampleRate) {
   return sampleRate/T0;
 }
 
+const debugURL = 'myway.mp3';
+var audio;
+var useDebugAudio = false;
+
 function getLocalStream() {
+    audio = new Audio('myway.mp3');
+    audio.controls = true;
+    audio.autoplay = true;
+    audio.crossOrigin = "anonymous";
+
+
   navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then((stream) => {
       audioContext = new (window.AudioContext || window.webkitAudioContext)();
       analyser = audioContext.createAnalyser();
       analyser.minDecibels = -100;
       analyser.maxDecibels = -10;
-      analyser.smoothingTimeConstant = 0.85;
+      analyser.smoothingTimeConstant = 0.1; //Was at 0.85
 
-      source = audioContext.createMediaStreamSource(stream);
+     // source = audioContext.createMediaStreamSource(stream); //use microphone
+      if(useDebugAudio){
+          source = audioContext.createMediaElementSource(audio); //use myway.mp3
+      }else{
+          source = audioContext.createMediaStreamSource(stream);
+      }
       source.connect(analyser);
 
+      if(useDebugAudio){
+          analyser.connect(audioContext.destination);
+      }
       running = true;
     })
     .catch((err) => {
@@ -143,7 +164,7 @@ function getLocalStream() {
     });
 }
 
-var noteThreshold = 0.1; //How accurate should it be updating? Default is it will only update for a 0.1Hz difference or more
+var noteThreshold = 15; //How accurate should it be updating? Default is it will only update for a 0.1Hz difference or more
 var noteHeldThreshold = 5;
 var heldTime = 0;
 var heldNote = 0;
@@ -191,7 +212,7 @@ const trebleClefImg = document.getElementById("trebleClef");
 const bassClefImg = document.getElementById("bassClef");
 
 var offsetFromTop = 50;
-var gap = 25;
+var gap = 27;
 
 function createStaff(gapSize, yOffset){
 
@@ -371,7 +392,15 @@ function draw(){
 
         let noteDistance = calculateDistanceToNote(heldNote);
 
-        ctx.arc(160, offsetFromTop+currentNotePosition, gap/4, 0, 2*Math.PI, 0);
+        ctx.arc(gap*5, offsetFromTop+currentNotePosition, gap/4, 0, 2*Math.PI, 0);
+
+        //Draw Time Signature on Staff
+        ctx.fillText(topTimeSignature.value, 3.2*gap, offsetFromTop+2*gap);
+        ctx.fillText(btmTimeSignature.value, 3.2*gap, offsetFromTop+4*gap);
+
+        ctx.fillText(topTimeSignature.value, 3.2*gap, offsetFromTop+8*gap);
+        ctx.fillText(btmTimeSignature.value, 3.2*gap, offsetFromTop+10*gap);
+
 
         ctx.fillStyle = "rgb("+noteDistance*255*2+", " +Math.abs(1-noteDistance)*255+ ", 0)";
         ctx.fill();
@@ -387,7 +416,7 @@ function draw(){
 ctx.lineWidth = 2;
 ctx.strokeStyle = "rgb(0, 0, 0)";
 ctx.fillStyle = "rgb(255, 255, 255)";
-ctx.font = '24px serif';
-createStaff(gap, offsetFromTop);
+ctx.font = 'bold '+2.5*gap+'px serif';
 
+createStaff(gap, offsetFromTop);
 draw();
