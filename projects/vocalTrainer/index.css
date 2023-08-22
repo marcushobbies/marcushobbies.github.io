@@ -59,11 +59,35 @@
 #settings input[type=file]{
     visibility: hidden;
 }
+
 #settings label{
+    margin: 0;
+    padding: 0;
+    color: white;
+    position: relative;
+    left: 1%;
+    font-size: 42px;
+
+    font-family: 'Roboto', sans-serif;
+    text-align: justify;
+    display: inline;
+
     background: rgb(28,27,43);
     background: linear-gradient(1deg, rgba(40,40,40,1), rgba(80,80,80,1) 100%, rgba(40,40,40,1));
 }
 #settings label:hover{
     background: rgb(28,27,43);
     background: linear-gradient(0deg, rgba(60,60,60,1), rgba(80,80,80,1) 100%);
+}
+#settings input[type=text]{
+    margin: 0;
+    position: relative;
+    background-color: #EEEEEE;
+    border: 0px;
+    border-radius: 0px;
+
+    font-size: 40px;
+    width: 60px;
+    left: 10px;
+    display: inline-block;
 }

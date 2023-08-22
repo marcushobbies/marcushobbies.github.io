@@ -25,6 +25,7 @@ with the above license.
 
 var pitchElement = document.getElementById("pitch");
 var noteElement = document.getElementById("note");
+var targetNoteElement = document.getElementById("targetNote");
 
 var topTimeSignature = document.getElementById("topTimeSig");
 var btmTimeSignature = document.getElementById("btmTimeSig");
@@ -227,128 +228,232 @@ function createStaff(gapSize, yOffset){
         staff.lineTo(canvasWidth, (y-bassYOffset)*gapSize + bassYOffset);
     }
 }
-
 var halfStepsFromA4 = new Map();
-halfStepsFromA4.set(-57, 'C0');
-halfStepsFromA4.set(-56, 'C#0');
-halfStepsFromA4.set(-55, 'D0');
-halfStepsFromA4.set(-54, 'D#0');
-halfStepsFromA4.set(-53, 'E0');
-halfStepsFromA4.set(-52, 'F0');
-halfStepsFromA4.set(-51, 'F#0');
-halfStepsFromA4.set(-50, 'G0');
-halfStepsFromA4.set(-49, 'G#0');
-halfStepsFromA4.set(-48, 'A0');
-halfStepsFromA4.set(-47, 'A#0');
-halfStepsFromA4.set(-46, 'B0');
+var inverseHalfStepsFromA4 = new Map();
 
-halfStepsFromA4.set(-45, 'C1');
-halfStepsFromA4.set(-44, 'C#1');
-halfStepsFromA4.set(-43, 'D1');
-halfStepsFromA4.set(-42, 'D#1');
-halfStepsFromA4.set(-41, 'E1');
-halfStepsFromA4.set(-40, 'F1');
-halfStepsFromA4.set(-39, 'F#1');
-halfStepsFromA4.set(-38, 'G1');
-halfStepsFromA4.set(-37, 'G#1');
-halfStepsFromA4.set(-36, 'A1');
-halfStepsFromA4.set(-35, 'A#1');
-halfStepsFromA4.set(-34, 'B1');
+var targetNoteFindFromA4 = new Map();
 
-halfStepsFromA4.set(-33, 'C2');
-halfStepsFromA4.set(-32, 'C#2');
-halfStepsFromA4.set(-31, 'D2');
-halfStepsFromA4.set(-30, 'D#2');
-halfStepsFromA4.set(-29, 'E2');
-halfStepsFromA4.set(-28, 'F2');
-halfStepsFromA4.set(-27, 'F#2');
-halfStepsFromA4.set(-26, 'G2');
-halfStepsFromA4.set(-25, 'G#2');
-halfStepsFromA4.set(-24, 'A2');
-halfStepsFromA4.set(-23, 'A#2');
-halfStepsFromA4.set(-22, 'B2');
 
-halfStepsFromA4.set(-21, 'C3');
-halfStepsFromA4.set(-20, 'C#3');
-halfStepsFromA4.set(-19, 'D3');
-halfStepsFromA4.set(-18, 'D#3');
-halfStepsFromA4.set(-17, 'E3');
-halfStepsFromA4.set(-16, 'F3');
-halfStepsFromA4.set(-15, 'F#3');
-halfStepsFromA4.set(-14, 'G3');
-halfStepsFromA4.set(-13, 'G#3');
-halfStepsFromA4.set(-12, 'A3');
-halfStepsFromA4.set(-11, 'A#3');
-halfStepsFromA4.set(-10, 'B3');
+function generateSemitoneMap(){
+    halfStepsFromA4.set(-57, 'C0');
+    halfStepsFromA4.set(-56, 'C#0');
+    halfStepsFromA4.set(-55, 'D0');
+    halfStepsFromA4.set(-54, 'D#0');
+    halfStepsFromA4.set(-53, 'E0');
+    halfStepsFromA4.set(-52, 'F0');
+    halfStepsFromA4.set(-51, 'F#0');
+    halfStepsFromA4.set(-50, 'G0');
+    halfStepsFromA4.set(-49, 'G#0');
+    halfStepsFromA4.set(-48, 'A0');
+    halfStepsFromA4.set(-47, 'A#0');
+    halfStepsFromA4.set(-46, 'B0');
 
-halfStepsFromA4.set(-9, 'C4');
-halfStepsFromA4.set(-8, 'C#4');
-halfStepsFromA4.set(-7, 'D4');
-halfStepsFromA4.set(-6, 'D#4');
-halfStepsFromA4.set(-5, 'E4');
-halfStepsFromA4.set(-4, 'F4');
-halfStepsFromA4.set(-3, 'F#4');
-halfStepsFromA4.set(-2, 'G4');
-halfStepsFromA4.set(-1, 'G#4');
-halfStepsFromA4.set(0, 'A4');
-halfStepsFromA4.set(1, 'A#4');
-halfStepsFromA4.set(2, 'B4');
+    halfStepsFromA4.set(-45, 'C1');
+    halfStepsFromA4.set(-44, 'C#1');
+    halfStepsFromA4.set(-43, 'D1');
+    halfStepsFromA4.set(-42, 'D#1');
+    halfStepsFromA4.set(-41, 'E1');
+    halfStepsFromA4.set(-40, 'F1');
+    halfStepsFromA4.set(-39, 'F#1');
+    halfStepsFromA4.set(-38, 'G1');
+    halfStepsFromA4.set(-37, 'G#1');
+    halfStepsFromA4.set(-36, 'A1');
+    halfStepsFromA4.set(-35, 'A#1');
+    halfStepsFromA4.set(-34, 'B1');
 
-halfStepsFromA4.set(3, 'C5');
-halfStepsFromA4.set(4, 'C#5');
-halfStepsFromA4.set(5, 'D5');
-halfStepsFromA4.set(6, 'D#5');
-halfStepsFromA4.set(7, 'E5');
-halfStepsFromA4.set(8, 'F5');
-halfStepsFromA4.set(9, 'F#5');
-halfStepsFromA4.set(10, 'G5');
-halfStepsFromA4.set(11, 'G#5');
-halfStepsFromA4.set(12, 'A5');
-halfStepsFromA4.set(13, 'A#5');
-halfStepsFromA4.set(14, 'B5');
+    halfStepsFromA4.set(-33, 'C2');
+    halfStepsFromA4.set(-32, 'C#2');
+    halfStepsFromA4.set(-31, 'D2');
+    halfStepsFromA4.set(-30, 'D#2');
+    halfStepsFromA4.set(-29, 'E2');
+    halfStepsFromA4.set(-28, 'F2');
+    halfStepsFromA4.set(-27, 'F#2');
+    halfStepsFromA4.set(-26, 'G2');
+    halfStepsFromA4.set(-25, 'G#2');
+    halfStepsFromA4.set(-24, 'A2');
+    halfStepsFromA4.set(-23, 'A#2');
+    halfStepsFromA4.set(-22, 'B2');
 
-halfStepsFromA4.set(15, 'C6');
-halfStepsFromA4.set(16, 'C#6');
-halfStepsFromA4.set(17, 'D6');
-halfStepsFromA4.set(18, 'D#6');
-halfStepsFromA4.set(19, 'E6');
-halfStepsFromA4.set(20, 'F6');
-halfStepsFromA4.set(21, 'F#6');
-halfStepsFromA4.set(22, 'G6');
-halfStepsFromA4.set(23, 'G#6');
-halfStepsFromA4.set(24, 'A6');
-halfStepsFromA4.set(25, 'A#6');
-halfStepsFromA4.set(26, 'B6');
+    halfStepsFromA4.set(-21, 'C3');
+    halfStepsFromA4.set(-20, 'C#3');
+    halfStepsFromA4.set(-19, 'D3');
+    halfStepsFromA4.set(-18, 'D#3');
+    halfStepsFromA4.set(-17, 'E3');
+    halfStepsFromA4.set(-16, 'F3');
+    halfStepsFromA4.set(-15, 'F#3');
+    halfStepsFromA4.set(-14, 'G3');
+    halfStepsFromA4.set(-13, 'G#3');
+    halfStepsFromA4.set(-12, 'A3');
+    halfStepsFromA4.set(-11, 'A#3');
+    halfStepsFromA4.set(-10, 'B3');
 
-halfStepsFromA4.set(27, 'C7');
-halfStepsFromA4.set(28, 'C#7');
-halfStepsFromA4.set(29, 'D7');
-halfStepsFromA4.set(30, 'D#7');
-halfStepsFromA4.set(31, 'E7');
-halfStepsFromA4.set(32, 'F7');
-halfStepsFromA4.set(33, 'F#7');
-halfStepsFromA4.set(34, 'G7');
-halfStepsFromA4.set(35, 'G#7');
-halfStepsFromA4.set(36, 'A7');
-halfStepsFromA4.set(37, 'A#7');
-halfStepsFromA4.set(38, 'B7');
+    halfStepsFromA4.set(-9, 'C4');
+    halfStepsFromA4.set(-8, 'C#4');
+    halfStepsFromA4.set(-7, 'D4');
+    halfStepsFromA4.set(-6, 'D#4');
+    halfStepsFromA4.set(-5, 'E4');
+    halfStepsFromA4.set(-4, 'F4');
+    halfStepsFromA4.set(-3, 'F#4');
+    halfStepsFromA4.set(-2, 'G4');
+    halfStepsFromA4.set(-1, 'G#4');
+    halfStepsFromA4.set(0, 'A4');
+    halfStepsFromA4.set(1, 'A#4');
+    halfStepsFromA4.set(2, 'B4');
+
+    halfStepsFromA4.set(3, 'C5');
+    halfStepsFromA4.set(4, 'C#5');
+    halfStepsFromA4.set(5, 'D5');
+    halfStepsFromA4.set(6, 'D#5');
+    halfStepsFromA4.set(7, 'E5');
+    halfStepsFromA4.set(8, 'F5');
+    halfStepsFromA4.set(9, 'F#5');
+    halfStepsFromA4.set(10, 'G5');
+    halfStepsFromA4.set(11, 'G#5');
+    halfStepsFromA4.set(12, 'A5');
+    halfStepsFromA4.set(13, 'A#5');
+    halfStepsFromA4.set(14, 'B5');
+
+    halfStepsFromA4.set(15, 'C6');
+    halfStepsFromA4.set(16, 'C#6');
+    halfStepsFromA4.set(17, 'D6');
+    halfStepsFromA4.set(18, 'D#6');
+    halfStepsFromA4.set(19, 'E6');
+    halfStepsFromA4.set(20, 'F6');
+    halfStepsFromA4.set(21, 'F#6');
+    halfStepsFromA4.set(22, 'G6');
+    halfStepsFromA4.set(23, 'G#6');
+    halfStepsFromA4.set(24, 'A6');
+    halfStepsFromA4.set(25, 'A#6');
+    halfStepsFromA4.set(26, 'B6');
+
+    halfStepsFromA4.set(27, 'C7');
+    halfStepsFromA4.set(28, 'C#7');
+    halfStepsFromA4.set(29, 'D7');
+    halfStepsFromA4.set(30, 'D#7');
+    halfStepsFromA4.set(31, 'E7');
+    halfStepsFromA4.set(32, 'F7');
+    halfStepsFromA4.set(33, 'F#7');
+    halfStepsFromA4.set(34, 'G7');
+    halfStepsFromA4.set(35, 'G#7');
+    halfStepsFromA4.set(36, 'A7');
+    halfStepsFromA4.set(37, 'A#7');
+    halfStepsFromA4.set(38, 'B7');
+
+    halfStepsFromA4.forEach((value, key) => {
+        inverseHalfStepsFromA4.set(value,key);
+    })
+
+    targetNoteFindFromA4.set('C0', -33);
+    targetNoteFindFromA4.set('C#0', -33);
+    targetNoteFindFromA4.set('D0', -32);
+    targetNoteFindFromA4.set('D#0', -32);
+    targetNoteFindFromA4.set('E0', -31);
+    targetNoteFindFromA4.set('F0', -30);
+    targetNoteFindFromA4.set('F#0', -30);
+    targetNoteFindFromA4.set('G0', -29);
+    targetNoteFindFromA4.set('G#0', -29);
+    targetNoteFindFromA4.set('A0', -28);
+    targetNoteFindFromA4.set('A#0', -28);
+    targetNoteFindFromA4.set('B0', -27);
+
+    targetNoteFindFromA4.set('C1', -26);
+    targetNoteFindFromA4.set('C#1', -26);
+    targetNoteFindFromA4.set('D1', -25);
+    targetNoteFindFromA4.set('D#1', -25);
+    targetNoteFindFromA4.set('E1', -24);
+    targetNoteFindFromA4.set('F1', -23);
+    targetNoteFindFromA4.set('F#1', -23);
+    targetNoteFindFromA4.set('G1', -22);
+    targetNoteFindFromA4.set('G#1', -22);
+    targetNoteFindFromA4.set('A1', -21);
+    targetNoteFindFromA4.set('A#1', -21);
+    targetNoteFindFromA4.set('B1', -20);
+
+    targetNoteFindFromA4.set('C2', -19);
+    targetNoteFindFromA4.set('C#2', -19);
+    targetNoteFindFromA4.set('D2', -18);
+    targetNoteFindFromA4.set('D#2', -18);
+    targetNoteFindFromA4.set('E2', -17);
+    targetNoteFindFromA4.set('F2', -16);
+    targetNoteFindFromA4.set('F#2', -16);
+    targetNoteFindFromA4.set('G2', -15);
+    targetNoteFindFromA4.set('G#2', -15);
+    targetNoteFindFromA4.set('A2', -14);
+    targetNoteFindFromA4.set('A#2', -14);
+    targetNoteFindFromA4.set('B2', -13);
+
+    targetNoteFindFromA4.set('C3', -12);
+    targetNoteFindFromA4.set('C#3', -12);
+    targetNoteFindFromA4.set('D3', -11);
+    targetNoteFindFromA4.set('D#3', -11);
+    targetNoteFindFromA4.set('E3', -10);
+    targetNoteFindFromA4.set('F3', -9);
+    targetNoteFindFromA4.set('F#3', -9);
+    targetNoteFindFromA4.set('G3', -8);
+    targetNoteFindFromA4.set('G#3', -8);
+    targetNoteFindFromA4.set('A3', -7);
+    targetNoteFindFromA4.set('A#3', -7);
+    targetNoteFindFromA4.set('B3', -6);
+
+    targetNoteFindFromA4.set('C4', -5);
+    targetNoteFindFromA4.set('C#4', -5);
+    targetNoteFindFromA4.set('D4', -4);
+    targetNoteFindFromA4.set('D#4', -4);
+    targetNoteFindFromA4.set('E4', -3);
+    targetNoteFindFromA4.set('F4', -2);
+    targetNoteFindFromA4.set('F#4', -2);
+    targetNoteFindFromA4.set('G4', -1);
+    targetNoteFindFromA4.set('G#4', -1);
+    targetNoteFindFromA4.set('A4', 0);
+    targetNoteFindFromA4.set('A#4', 0);
+    targetNoteFindFromA4.set('B4', 1);
+
+    targetNoteFindFromA4.set('C5', 2);
+    targetNoteFindFromA4.set('C#5', 2);
+    targetNoteFindFromA4.set('D5', 3);
+    targetNoteFindFromA4.set('D#5', 3);
+    targetNoteFindFromA4.set('E5', 4);
+    targetNoteFindFromA4.set('F5', 5);
+    targetNoteFindFromA4.set('F#5', 5);
+    targetNoteFindFromA4.set('G5', 6);
+    targetNoteFindFromA4.set('G#5', 6);
+    targetNoteFindFromA4.set('A5', 7);
+    targetNoteFindFromA4.set('A#5', 7);
+    targetNoteFindFromA4.set('B5', 8);
+
+    targetNoteFindFromA4.set('C6', 9);
+    targetNoteFindFromA4.set('C#6', 9);
+    targetNoteFindFromA4.set('D6', 10);
+    targetNoteFindFromA4.set('D#6', 10);
+    targetNoteFindFromA4.set('E6', 11);
+    targetNoteFindFromA4.set('F6', 12);
+    targetNoteFindFromA4.set('F#6', 12);
+    targetNoteFindFromA4.set('G6', 13);
+    targetNoteFindFromA4.set('G#6', 13);
+    targetNoteFindFromA4.set('A6', 14);
+    targetNoteFindFromA4.set('A#6', 14);
+    targetNoteFindFromA4.set('B6', 15);
+
+    targetNoteFindFromA4.set('C7', 16);
+    targetNoteFindFromA4.set('C#7', 16);
+    targetNoteFindFromA4.set('D7', 17);
+    targetNoteFindFromA4.set('D#7', 17);
+    targetNoteFindFromA4.set('E7', 18);
+    targetNoteFindFromA4.set('F7', 19);
+    targetNoteFindFromA4.set('F#7', 19);
+    targetNoteFindFromA4.set('G7', 20);
+    targetNoteFindFromA4.set('G#7', 20);
+    targetNoteFindFromA4.set('A7', 21);
+    targetNoteFindFromA4.set('A#7', 22);
+    targetNoteFindFromA4.set('B7', 23);
+}
+
 
 function findRelativeNote(freq){
     let halfSteps = Math.log(freq/440)/Math.log(Math.pow(2,1/12));
     let note = "A4";
 
-    if(halfSteps > 0){
-        note = halfStepsFromA4.get(Math.ceil(halfSteps));
-        if(halfSteps % 1 < 0.5){
-            note = halfStepsFromA4.get(Math.floor(halfSteps));
-        }
-    }
-    if(halfSteps < 0){
-        note = halfStepsFromA4.get(Math.ceil(halfSteps));
-        if(halfSteps % 1 < -0.5){
-            note = halfStepsFromA4.get(Math.floor(halfSteps));
-        }
-    }
+    note = halfStepsFromA4.get(Math.round(halfSteps));
 
     return note;
 }
@@ -370,10 +475,39 @@ function calculateDistanceToNote(frequency){
 
     return decimal;
 }
+function calculateDistanceToSpecificNote(frequency, targetSemitone){
+    let n = (12*Math.log(frequency/440))/(Math.log(2));
 
+    let decimal = Math.abs(n-targetSemitone);
+
+    return decimal;
+}
+
+
+// 𝅗𝅘𝅥𝅘𝅥𝅯𝅘𝅥𝅱  𝄾𝄿𝅁
+
+function drawNote(note, type){
+    var prevStyle = ctx.fillStyle;
+    var prevFont = ctx.font;
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.font = 'bold '+2.5*gap+'px serif';
+
+    //Middle of each gap is every 0.5*gap, starting from 0.25*gap
+    var a4Position = 0.25 + 5*0.5;
+    var yPosition = (note*0.5 + a4Position)*gap;
+
+    ctx.fillText("𝅘𝅥", 8*gap, offsetFromTop+yPosition);
+
+    ctx.fillStyle = prevStyle;
+    ctx.font = prevFont;
+}
+
+var targetNote = inverseHalfStepsFromA4.get("C4");
 
 function draw(){
     drawVisual = requestAnimationFrame(draw);
+
+    targetNote = -targetNoteFindFromA4.get(targetNoteElement.value);
 
     if(running){
         findNote();
@@ -389,8 +523,8 @@ function draw(){
         ctx.drawImage(bassClefImg, 10, 50 + 6*gap, 7/3*gap, 3*gap);
         ctx.beginPath();
 
+        drawNote(targetNote, 0);
 
-        let noteDistance = calculateDistanceToNote(heldNote);
 
         ctx.arc(gap*5, offsetFromTop+currentNotePosition, gap/4, 0, 2*Math.PI, 0);
 
@@ -402,7 +536,16 @@ function draw(){
         ctx.fillText(btmTimeSignature.value, 3.2*gap, offsetFromTop+10*gap);
 
 
-        ctx.fillStyle = "rgb("+noteDistance*255*2+", " +Math.abs(1-noteDistance)*255+ ", 0)";
+        if(targetNoteElement.value == ""){
+            let noteDistance = calculateDistanceToNote(heldNote);
+            ctx.fillStyle = "rgb("+noteDistance*255*2+", " +Math.abs(1-noteDistance)*255+ ", 0)";
+        }else{
+            let noteDistance = 1/calculateDistanceToSpecificNote(heldNote, inverseHalfStepsFromA4.get(targetNoteElement.value));
+            if(noteDistance > 1){
+                noteDistance = 1;
+            }
+            ctx.fillStyle = "rgb("+128/noteDistance + ", "+noteDistance*255+" , 0)";
+        }
         ctx.fill();
         ctx.fillStyle = "rgb(0, 0, 0)";
         //Calculate currentNotePosition from frequency and place it on the musical staff
@@ -418,5 +561,6 @@ ctx.strokeStyle = "rgb(0, 0, 0)";
 ctx.fillStyle = "rgb(255, 255, 255)";
 ctx.font = 'bold '+2.5*gap+'px serif';
 
+generateSemitoneMap();
 createStaff(gap, offsetFromTop);
 draw();
