@@ -540,7 +540,8 @@ function draw(){
             let noteDistance = calculateDistanceToNote(heldNote);
             ctx.fillStyle = "rgb("+noteDistance*255*2+", " +Math.abs(1-noteDistance)*255+ ", 0)";
         }else{
-            let noteDistance = 1/calculateDistanceToSpecificNote(heldNote, inverseHalfStepsFromA4.get(targetNoteElement.value));
+            let accuracy = 6; // 1 being not so accuarte, the closer towards +infinity, the more exact you must be for it to turn green
+            let noteDistance = 1/(accuracy*calculateDistanceToSpecificNote(heldNote, inverseHalfStepsFromA4.get(targetNoteElement.value)));
             if(noteDistance > 1){
                 noteDistance = 1;
             }
