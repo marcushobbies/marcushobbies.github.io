@@ -1,7 +1,12 @@
+body{
+    margin: 0;
+
+}
 
 #sheet{
-    border: 1px solid;
-
+    border: 0px solid;
+    height: 700px;
+    border: none;
 }
 
 #bassClef{
@@ -14,7 +19,6 @@
 .timeSignature{
     width: 35px;
 }
-
 
 
 #settings{

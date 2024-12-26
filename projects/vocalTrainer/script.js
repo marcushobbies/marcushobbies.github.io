@@ -129,12 +129,22 @@ function autoCorrelate(buffer, sampleRate) {
   return sampleRate/T0;
 }
 
+function reportCanvasSize() {
+  //canvasHeight = window.height*window.devicePixelRatio;
+  //canvasWidth = window.width*window.devicePixelRatio;
+
+  //canvas.width = window.innerWidth;
+  //canvas.height = 700;
+}
+
+window.onresize = reportCanvasSize;
+
 const debugURL = 'myway.mp3';
 var audio;
 var useDebugAudio = false;
 
 function getLocalStream() {
-    audio = new Audio('myway.mp3');
+    audio = new Audio('f2-c6.mp3');
     audio.controls = true;
     audio.autoplay = true;
     audio.crossOrigin = "anonymous";
@@ -212,7 +222,7 @@ var staff = new Path2D();
 const trebleClefImg = document.getElementById("trebleClef");
 const bassClefImg = document.getElementById("bassClef");
 
-var offsetFromTop = 50;
+const offsetFromTop = 150;
 var gap = 27;
 
 function createStaff(gapSize, yOffset){
@@ -486,6 +496,7 @@ function calculateDistanceToSpecificNote(frequency, targetSemitone){
 
 // 𝅗𝅘𝅥𝅘𝅥𝅯𝅘𝅥𝅱  𝄾𝄿𝅁
 
+
 function drawNote(note, type){
     var prevStyle = ctx.fillStyle;
     var prevFont = ctx.font;
@@ -504,6 +515,41 @@ function drawNote(note, type){
 
 var targetNote = inverseHalfStepsFromA4.get("C4");
 
+const activeNotePosition = canvasWidth - canvasWidth/8;
+
+class NoteQueue {
+    constructor() {
+        this.notes = {};
+        this.head = 0;
+        this.tail = 0;
+    }
+    queue(color_, freq_){
+        this.notes[this.tail] = {color: color_, freq: freq_};
+        this.tail++;
+    }
+    preview(i){
+        return this.notes[i]
+    }
+    deleteFirst(){
+        delete this.notes[this.head];
+        this.head++;
+    }
+    getLength(){
+        return this.tail-this.head;
+    }
+}
+
+const maxNotes = 1;
+var pastNotes = new NoteQueue();
+
+function drawPastNotes(){
+    for (var i = 0; i < pastNotes.getLength(); i++){
+        //console.log(pastNotes.preview(i).color);
+    }
+    if(pastNotes.getLength() > maxNotes) pastNotes.deleteFirst();
+}
+
+
 function draw(){
     drawVisual = requestAnimationFrame(draw);
 
@@ -519,14 +565,14 @@ function draw(){
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.fillStyle = "rgb(0, 0, 0)";
 
-        ctx.drawImage(trebleClefImg, 0, 30, 3*gap, 6*gap);
-        ctx.drawImage(bassClefImg, 10, 50 + 6*gap, 7/3*gap, 3*gap);
+        ctx.drawImage(trebleClefImg, 0, offsetFromTop-1*gap, 3*gap, 6*gap);
+        ctx.drawImage(bassClefImg, 10, offsetFromTop + 6*gap, 7/3*gap, 3*gap);
         ctx.beginPath();
 
         drawNote(targetNote, 0);
 
 
-        ctx.arc(gap*5, offsetFromTop+currentNotePosition, gap/4, 0, 2*Math.PI, 0);
+        ctx.arc(activeNotePosition, offsetFromTop+currentNotePosition, gap/4, 0, 2*Math.PI, 0); //gap*5
 
         //Draw Time Signature on Staff
         ctx.fillText(topTimeSignature.value, 3.2*gap, offsetFromTop+2*gap);
@@ -547,6 +593,8 @@ function draw(){
             }
             ctx.fillStyle = "rgb("+128/noteDistance + ", "+noteDistance*255+" , 0)";
         }
+        //pastNotes.queue(ctx.fillStyle, currentNotePosition);
+        //drawPastNotes();
         ctx.fill();
         ctx.fillStyle = "rgb(0, 0, 0)";
         //Calculate currentNotePosition from frequency and place it on the musical staff
