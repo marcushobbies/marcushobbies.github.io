@@ -8,67 +8,38 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="css/master.css">
+
     </head>
     <body>
 
-    <span id="entrance">
-    <center><h1>Welcome</h1>
-    <div class="btn" id="enterBtn" onmousedown="enter()" onmouseup="resetEnter()">Hold To Enter</div><br>
-    </center>
-    </span>
-    <span id="console" class="terminal" onmouseover="assignNavHoverAnimation()"></span><br>
-    <br>
+    <header>
+        <h2>Marcus Porfilio</h2>
+        <nav>
+            <ul class="nav">
+                <li><a href="">Home</a></li>
+                <li><a href="projects/index.html">Projects</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <span id="mainSite" class="hidden">
-        <span id="desc">
-            <div class="content">
-                <h2>Marcus Porfilio</h2>
-                Hi, I'm Marcus Porfilio. I have a lot of interests, and many projects, so I thought I'd archive them all here on my website. <br>
-                You can use the console above to navigate the site, or if you'd like, you can use this list of projects:
-                <br><br><h2 id="projTitle">Projects</h2>
-            </div><br>
+    <main>
+        <div class="text">
+            <h1>Hi, I'm Marcus.</h1>
+            <p>
+                I'm currently studying Computer Engineering Student at McGill University. <br>
+                I enjoy programming, designing, and building things using whatever methods and materials are at my disposal.
+            </p>
+            <p>
+                Feel free to check out my <a href="projects/index.html">projects</a> page to see a few of my completed projects.
+            </p>
+         </div>
+         <img src="assets/Preview_Photo.JPG" width="300px"></img>
 
-        </span>
-        <div class="projects">
-            <a href="projects/vocalAnalyser/index.html">
-            <div class="project">
-                <h3>Audio Analyser</h3>
-                A simple audio analyser that I made in a few days.
-            </div>
-            </a>
-            <a>
-            <a href="projects/vocalTrainer/index.html">
-            <div class="project">
-                <h3>Vocal Trainer</h3>
-                Based off my audio analyser, places notes on the musical staff.
-            </div>
-            </a>
-            <a>
-            <div class="project">
-                <h3>Sub Ubi</h3>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet at magna quis mattis. Etiam mollis, arcu sed nunc.
-            </div>
-            </a>
-            <a>
-            <div class="project">
-                <h3>Lorem Ipsum</h3>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet at magna quis mattis. Etiam mollis, arcu sed nunc.
-            </div>
-            </a>
-            <a>
-            <div class="project">
-                <h3>Lorem Isea</h3>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet at magna quis mattis. Etiam mollis, arcu sed nunc.
-            </div>
-            </a>
-            <a>
-            <div class="project">
-                <h3>Sub Ubi</h3>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquet at magna quis mattis. Etiam mollis, arcu sed nunc.
-            </div>
-            </a>
-        </div>
-    </span>
+    </main>
+
+    <footer>
+        <p>© 2024 Marcus Porfilio. All rights reserved.</p>
+    </footer>
 
     <script type="text/javascript" src="js/master.js"></script>
     </body>

@@ -1,216 +1,110 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
+    background-color: rgb(61, 58, 58);
+    color: whitesmoke;
 
-    margin: 0;
-}
-
-div.btn {
-    /*Setting Up Button Appearance */
-    font-size: 18px;
-    border: 2px solid #000;
-    padding: 0.1em 0.3em;
-    overflow: hidden;
-
-    /*Setting Up Button Animation */
-    animation-name: hoverSqueezeOut;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
-
-    /*Dealing With Cursor Feedback */
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-
-    cursor: pointer;
-}
-span.terminal{
-    display: inline-block;
-    background-color: black;
-    color: white;
-    overflow-y: scroll;
-    scroll-behavior: auto;
-
-    width: 100%;
-    height: 40em;
-}
-
-div.btn:hover {
-    background-color: rgba(253, 252, 200, 128);
-
-
-    animation-name: hoverSqueezeIn;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
-}
-
-div.btn:active {
-    width: 7em;
-    animation-name: enterSqueeze;
-    animation-duration: 0.3s;
-    animation-delay: 1s;
-    animation-fill-mode: forwards;
-}
-
-.hidden{
-    visibility: hidden;
-}
-
-span.navbar {
-    display: inline-block;
-    background-color: black;
-    opacity: 0.75;
-    color: white;
-
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 3em;
-}
-span.animNavBar {
-    /*animation: navUnHover;
-    animation-duration: 0.3s;
-    animation-fill-mode: forwards;*/
-}
-
-span.navbar:hover {
-    /*animation: navHover;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;*/
-
-    backdrop-filter: blur(10px);
-}
-
-span.transitionNav {
-    animation-name: navSqueeze;
-    animation-duration: 0.4s;
-    animation-fill-mode: forwards;
-}
-
-span.navbar input{
-    background-color: black;
-    color: white;
-    border: none;
-    outline: none;
-
-    width: 90%;
-}
-
-
-div.projects {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1em;
-    margin-right: 100px;
-
-    width: 100%;
-    padding: 0.5em;
+    overflow-wrap: break-word;
 
 }
-div.project {
-    background-color: gray;
-    opacity: 0.8;
-    color: black;
-    width: 95%;
-    padding: 0.5em;
 
-    height: 180px;
+header {
+    display: -webkit-flex;
+    display: flex;
 
-    /*Dealing With Cursor Feedback */
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    padding: 0px 20px;
 
-    cursor: pointer;
-}
-div.project:hover {
-    opacity: 0.9;
+    justify-content: space-between;
+    align-content: center;
+
+    background-color: rgb(49, 47, 47);
+    box-shadow: 0 2px 8px rgb(49, 47, 47);
+    color: whitesmoke;
 }
 
-div.projects a{
-    text-decoration: none;
+header h2 {
+    padding: 15px 10px;
 }
 
-/* TODO: Browser compatibility with @keyframes*/
-@keyframes navSqueeze {
-    0%{
-        transform: translateY(0);
-        height: 40em;
-    }
-    100%{
-        transform: translateY(-9.8em);
-        height: 3em;
-    }
-}
-@keyframes navHover {
-    0%{
-        opacity: 1;
-        height: 3em;
-    }
-    100%{
-        opacity: 0.7;
-        height: 30em;
-    }
-}
-@keyframes navUnHover {
-    0%{
-        opacity: 0.7;
-        height: 30em;
-    }
-    100%{
-        opacity: 1;
-        height: 3em;
-    }
-}
-
-span#desc{
-    float: left;
-    position: relative;
-    left: 50%;
-}
-div.content{
-    float: left;
-    position: relative;
-    left: -50%;
-}
-div.content h2{
+footer {
     text-align: center;
-}
-@keyframes hoverSqueezeOut {
-    0%{
-        width: 7em;
-        background-color: rgba(253, 252, 200, 128);
-    }
-    100%{
-        width: 8em;
-        background-color: rgba(253, 252, 200, 0);
-    }
+    padding: 2em 3em 4em;
+
+
+    background-color: rgb(56, 53, 53);
 }
 
-@keyframes hoverSqueezeIn {
-    0%{
-        width: 8em;
-        background-color: rgba(253, 252, 200, 0);
-    }
-    100%{
-        width: 7em;
-        background-color: rgba(253, 252, 200, 128);
-    }
+.nav {
+    display: -webkit-flex;
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+    height: 5vh;
+
+}
+.nav li {
+    list-style-type: none;
+    padding: 15px 10px;
 }
 
-@keyframes enterSqueeze {
-    0%{
-        background-color: rgba(253, 252, 200, 128);
-        width: 7em;
-    }
-    100%{
-         width: 0em;
-         padding: 0.1em 0em;
-         background-color: rgba(195, 243, 49, 128);
-    }
+.nav li:hover{
+    background-color: rgb(85, 85, 170);
+}
+
+.nav li a {
+    text-decoration: none;
+    font-size: 1.4rem;
+
+    color: whitesmoke;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 3vh;
+
+    text-align: left;
+    
+    width: 80vw;
+
+}
+
+main .text {
+    display: block;
+    margin: 2em;
+}
+
+main a {
+    color: rgb(43, 118, 231);
+}
+
+main p {
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+main h1, main h2, main h2, main h2 {
+    margin: 0 0 0.5rem;
+    line-height: 1;
+
+    margin-bottom: 0.5em;
+}
+main h1{
+    font-size: 3em;
+}
+
+main h2{
+    font-size: 2em;
+}
+
+main img {
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px rgb(20,20,20);
 }
