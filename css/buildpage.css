@@ -17,3 +17,11 @@ main{
     height: 200px;
     align-self: flex-start;
 }
+
+.walnut {
+    color: rgb(179, 85, 30);
+}
+
+.padauk{
+    color: rgb(173, 3, 3);
+}
