@@ -3,13 +3,19 @@
     padding: 0;
 }
 
+html{
+    height: 100%;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: rgb(61, 58, 58);
     color: whitesmoke;
 
     overflow-wrap: break-word;
-
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
 }
 
 header {
@@ -33,7 +39,8 @@ header h2 {
 footer {
     text-align: center;
     padding: 2em 3em 4em;
-    bottom: 0;
+    display: block;
+    bottom: 0px;
 
     background-color: rgb(56, 53, 53);
 }
@@ -51,6 +58,7 @@ footer {
 .nav li {
     list-style-type: none;
     padding: 15px 10px;
+    height: 100%;
 }
 
 .nav li:hover{
@@ -74,7 +82,7 @@ main {
     text-align: left;
     
     width: 80vw;
-
+    flex: 1;
 }
 
 main .text {
