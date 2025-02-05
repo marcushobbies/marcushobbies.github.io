@@ -2,6 +2,48 @@ main{
     display: block;
 }
 
+.verticalFlow{
+    display: flex;
+    flex-direction: row;
+}
+
+.table {
+    display: flex;
+    flex-direction: row;
+}
+
+.table p{
+    width: 50%;
+}
+table {
+    border-collapse: collapse;
+    border-radius: 8px;
+}
+
+td, th {
+    border: 1px dotted #dddddd;
+    text-align: left;
+    padding: 10px;
+}
+
+tr:nth-child(even) {
+    background-color: #201d1d;
+}
+
+tr:nth-child(odd) {
+    background-color: #494242;
+}
+
+tr:first-child{
+    background-color: rgb(100, 100, 100);
+}
+
+.labelledTable {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
 .gallery{
     display: flex;
     flex-wrap: wrap;

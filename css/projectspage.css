@@ -39,3 +39,15 @@ main{
 .date {
     color: rgb(224, 213, 213);
 }
+
+
+.filtersBar {
+    background-color: rgb(49, 47, 47);
+    border-radius: 4px;
+    display: flex;
+
+    padding: 10px 5px;
+    margin-bottom: 1em;
+
+    flex-flow: row-reverse;
+}
